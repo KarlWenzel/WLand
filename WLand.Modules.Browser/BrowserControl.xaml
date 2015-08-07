@@ -1,0 +1,42 @@
+﻿<UserControl x:Class="WLand.Modules.Browser.BrowserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:cefSharp="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
+             xmlns:prism="http://www.codeplex.com/prism"
+             xmlns:local="clr-namespace:WLand.Modules.Browser"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="800">
+
+
+  <Grid Height="Auto" Margin="0,0,-224,0">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+
+    <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="10,10,10,20">
+      <Label>URL</Label>
+      <TextBox x:Name="txtUrl" Text="{Binding Address}" Width="300"></TextBox>
+      <Button x:Name="btnGo" Click="btnGo_Click" Margin="10,0,0,0" Width="40">Go</Button>
+      <Button x:Name="btnScrape" Click="btnScrape_Click" Margin="10,0,0,0" Width="60">Scrape</Button>
+    </StackPanel>
+
+    <local:ChromiumControl Grid.Row="1"></local:ChromiumControl>
+
+    <StatusBar Grid.Row="2">
+      <ProgressBar 
+            HorizontalAlignment="Right"
+            IsIndeterminate="{Binding WebBrowser.IsLoading}"
+            Width="100"
+            Height="16"
+            Margin="3" 
+          />
+      <Separator />
+    </StatusBar>
+  </Grid>
+
+
+</UserControl>

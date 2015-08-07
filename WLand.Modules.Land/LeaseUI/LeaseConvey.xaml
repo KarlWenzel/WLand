@@ -1,0 +1,191 @@
+﻿<UserControl x:Class="WLand.Modules.Land.LeaseUI.LeaseConvey"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:wland="clr-namespace:WLand.Modules.Land.LeaseUI"
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="800">
+  <UserControl.Resources>
+
+    <wland:ExampleLeaseVM x:Key="ExampleLeaseVMData"></wland:ExampleLeaseVM>
+    
+    <wland:ExampleLessorWIList x:Key="ExLessorWIList"></wland:ExampleLessorWIList>
+    <wland:ExampleNriList x:Key="ExNriList"></wland:ExampleNriList>
+    
+    <Style x:Key="Base-Margin" TargetType="Control">
+      <Setter Property="Margin" Value="0, 10, 0, 0"></Setter>
+      <Setter Property="VerticalAlignment" Value="Top"></Setter>
+      <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+    </Style>
+    
+    <Style x:Key="Base-Button" BasedOn="{StaticResource Base-Margin}" TargetType="Button">
+      
+    </Style>
+
+    <Style x:Key="Base-Button-Left-Pad" BasedOn="{StaticResource Base-Margin}" TargetType="Button">
+      <Setter Property="Margin" Value="10, 10, 0, 0"></Setter>
+    </Style>
+
+    <Style x:Key="Base-TextBox" BasedOn="{StaticResource Base-Margin}" TargetType="TextBox">
+      <Setter Property="Height" Value="24"></Setter>
+    </Style>
+
+    <Style x:Key="Base-Label" BasedOn="{StaticResource Base-Margin}" TargetType="Label">
+      <Setter Property="Height" Value="24"></Setter>
+    </Style>
+
+    <Style x:Key="Base-Combo" BasedOn="{StaticResource Base-Margin}" TargetType="{x:Type Control}" >
+      <Setter Property="Height" Value="24"></Setter>
+    </Style>
+
+    <Style x:Key="Label-Med" BasedOn="{StaticResource Base-Label}" TargetType="{x:Type Label}">
+      <Setter Property="Width" Value="100"></Setter>
+    </Style>
+
+    <Style x:Key="TextBox-Med" BasedOn="{StaticResource Base-TextBox}" TargetType="TextBox">
+      <Setter Property="Width" Value="200"></Setter>
+    </Style>
+
+    <Style x:Key="TextBox-Small" BasedOn="{StaticResource Base-TextBox}" TargetType="{x:Type TextBox}">
+      <Setter Property="Width" Value="80"></Setter>
+    </Style>
+
+    <Style x:Key="Combo-Small" BasedOn="{StaticResource Base-Combo}" TargetType="{x:Type ComboBox}">
+      <Setter Property="Width" Value="80"></Setter>
+    </Style>
+
+  </UserControl.Resources>
+  <StackPanel x:Name="LeaseConveyPanel" DataContext="{StaticResource ExampleLeaseVMData}">
+    
+    <StackPanel Orientation="Horizontal">
+      
+      <StackPanel Width="350">
+        
+        <StackPanel Orientation="Horizontal">
+          <Label Style="{StaticResource Label-Med}">Lease Legal</Label>
+          <TextBox Style="{StaticResource TextBox-Med}"></TextBox>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal">
+          <Label Style="{StaticResource Label-Med}">Gross Acres</Label>
+          <TextBox Style="{StaticResource TextBox-Small}"></TextBox>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal">
+          <Label Style="{StaticResource Label-Med}">Royalty</Label>
+          <ComboBox Style="{StaticResource Combo-Small}">
+            <ComboBoxItem Name="cbo1" IsSelected="True">1/8th</ComboBoxItem>
+            <!--<ComboBoxItem Name="cbo2">3/16th</ComboBoxItem>
+            <ComboBoxItem Name="cbo3">1/4th</ComboBoxItem>-->            
+          </ComboBox>
+        </StackPanel>
+
+      </StackPanel>
+      
+      <StackPanel Width="200">
+        
+        <StackPanel Orientation="Horizontal">
+          <Label Style="{StaticResource Label-Med}">Original Lessor(s)</Label>
+          <Button Style="{StaticResource Base-Button}">Add Lessor</Button>
+        </StackPanel>
+        
+        <ListBox Height="60" Margin="5" ItemsSource="{Binding Lessors}">
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <StackPanel Orientation="Horizontal">
+                <Label Content="{Binding OwnerName}"></Label>
+              </StackPanel>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+
+      </StackPanel>
+
+      <StackPanel Width="200">
+
+        <StackPanel Orientation="Horizontal">
+          <Label Style="{StaticResource Label-Med}">Original Lessees</Label>
+          <Button Style="{StaticResource Base-Button}">Add Lessee</Button>
+        </StackPanel>
+
+        <ListBox Height="60" Margin="5" ItemsSource="{Binding Lessees}">
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <StackPanel Orientation="Horizontal">
+                <Label Content="{Binding OwnerName}"></Label>
+              </StackPanel>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+
+      </StackPanel>
+
+    </StackPanel>
+    
+    <StackPanel Orientation="Horizontal">
+      <Label Style="{StaticResource Label-Med}">Lease Tracts</Label>
+      <Button x:Name="btnAddTract" Style="{StaticResource Base-Button}" Click="btnAddTract_Click">Add Tract</Button>
+      <Button Style="{StaticResource Base-Button-Left-Pad}">Add Predecessor Link</Button>
+    </StackPanel>
+
+    <DataGrid x:Name="LeaseTractsGrid" Margin="10" Height="400" AutoGenerateColumns="False" ItemsSource="{Binding LeaseTracts}">
+      <DataGrid.Columns>
+        <DataGridTextColumn Header="Tracts" Binding="{Binding TractLabel}"></DataGridTextColumn>
+      </DataGrid.Columns>
+      <DataGrid.RowDetailsTemplate>
+        <DataTemplate>
+          <StackPanel Orientation="Horizontal" Margin="10">
+
+            <StackPanel Margin="10">
+              <Label>Divested WI</Label>
+              <DataGrid ItemsSource="{Binding DivestedWI}" AutoGenerateColumns="False">
+                <DataGrid.Columns>                  
+                  <DataGridTextColumn Header="Owner" Binding="{Binding Owner.OwnerName}"></DataGridTextColumn>                  
+                  <DataGridTemplateColumn Header="Convey Type">
+                    <DataGridTemplateColumn.CellTemplate>
+                      <DataTemplate>
+                        <ComboBox Text="{Binding ConveyType}">
+                          <ComboBoxItem x:Name="cboRelToTract">Rel To Tract</ComboBoxItem>
+                        </ComboBox>
+                      </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>                    
+                  </DataGridTemplateColumn>
+                  <DataGridTextColumn Header="Amount" Binding="{Binding Amount}"></DataGridTextColumn>
+                </DataGrid.Columns>
+              </DataGrid>
+              <Label>(Needs totals column)</Label>
+            </StackPanel>
+
+            <StackPanel Margin="10">
+              <Label>Acquired WI</Label>
+              <DataGrid ItemsSource="{Binding AcquiredWI}" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                  <DataGridTextColumn Header="Owner" Binding="{Binding Owner.OwnerName}"></DataGridTextColumn>
+                  <DataGridTextColumn Header="Amount" Binding="{Binding Amount}"></DataGridTextColumn>
+                </DataGrid.Columns>
+              </DataGrid>
+              <Label>(Needs totals column)</Label>
+            </StackPanel>
+
+            <StackPanel Margin="10">
+              <Label>NRI</Label>
+              <DataGrid ItemsSource="{StaticResource ExNriList}" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                  <DataGridTextColumn Header="Owner" Binding="{Binding OwnerName}"></DataGridTextColumn>
+                  <DataGridTextColumn Header="Base NRI" Binding="{Binding BaseCalcText}"></DataGridTextColumn>
+                  <DataGridTextColumn Header="Adjustment" Binding="{Binding AdjustCalc}"></DataGridTextColumn>
+                  <DataGridTextColumn Header="Final NRI" Binding="{Binding FinalCalc}"></DataGridTextColumn>
+                </DataGrid.Columns>
+              </DataGrid>
+              <Label>(Needs totals column)</Label>
+            </StackPanel>
+            
+          </StackPanel>          
+        </DataTemplate>
+      </DataGrid.RowDetailsTemplate>
+    </DataGrid>
+    
+    
+  </StackPanel>
+</UserControl>
